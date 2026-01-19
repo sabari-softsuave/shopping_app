@@ -1,0 +1,11 @@
+[33ma797a36[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: reset: moving to HEAD@{1}
+[33ma797a36[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{1}: pull origin main --rebase (finish): returning to refs/heads/main
+[33ma797a36[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{2}: pull origin main --rebase (start): checkout a797a363a969d4f33a88ea1c40ca1b983e1a10d0
+[33m73d5246[m HEAD@{3}: Branch: renamed refs/heads/main to refs/heads/main
+[33m73d5246[m HEAD@{5}: Branch: renamed refs/heads/main to refs/heads/main
+[33m73d5246[m HEAD@{7}: Branch: renamed refs/heads/main to refs/heads/main
+[33m73d5246[m HEAD@{9}: commit (merge): Merge remote-tracking branch 'origin/main' into main (resolved gitignore conflict)
+[33m6218f08[m HEAD@{10}: rebase (abort): returning to refs/heads/main
+[33md5f1da2[m HEAD@{11}: pull origin main --rebase (start): checkout d5f1da2676cdd831b5a69144c0fed99b0cacdfe5
+[33m6218f08[m HEAD@{12}: Branch: renamed refs/heads/main to refs/heads/main
+[33m6218f08[m HEAD@{14}: commit (initial): Initial commit
