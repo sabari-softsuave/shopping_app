@@ -3,40 +3,62 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 
-const ForgotPasswordScreen = ({navigation}) => {
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
+
+const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+  const handleResetPassword = async () => {
+    if (!isEmailValid) return;
+    setIsLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      alert("Password reset email sent!");
+      navigation.navigate('Login');
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Forgot {"\n"}password?</Text>
-      <View style={{gap:10, alignItems:'center', marginBottom:20}}>
+      <View style={{ gap: 10, alignItems: 'center', marginBottom: 20 }}>
         <View style={styles.inputContainer}>
           <Ionicons name="mail" size={20} color="#888" style={styles.icon} />
-          <TextInput 
-            placeholder="Enter your email address" 
-            style={styles.input} 
+          <TextInput
+            placeholder="Enter your email address *"
+            style={styles.input}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
           />
         </View>
-        {!isEmailValid && email.length > 0 && (
-          <Text style={styles.errorText}>Please enter a valid email address</Text>
-        )}
+
         <Text style={styles.info}>
-          <Text style={{color: '#F83758'}}>* </Text> We will send you a message to set or reset{"\n"} your new password
+          <Text style={{ color: '#F83758' }}>* </Text> We will send you a message to set or reset{"\n"} your new password
         </Text>
       </View>
 
-       <TouchableOpacity 
-         style={styles.button}  
-         onPress={() => isEmailValid && navigation.navigate('Login')}
-         disabled={!isEmailValid}
-       >
-        <Text style={styles.buttonText}>Submit</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          if (!isEmailValid) {
+            alert("Please enter a valid email address.");
+            return;
+          }
+          handleResetPassword();
+        }}
+        disabled={isLoading}
+      >
+        <Text style={styles.buttonText}>{isLoading ? "Sending..." : "Submit"}</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -63,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#A8A8A9',
-    backgroundColor:'#F3F3F3',
+    backgroundColor: '#F3F3F3',
     borderRadius: 10,
     paddingHorizontal: 15,
     marginVertical: 10,
@@ -107,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     alignSelf: 'flex-start',
     marginLeft: 10,
-    marginTop:-20,
+    marginTop: -20,
   },
 });
 

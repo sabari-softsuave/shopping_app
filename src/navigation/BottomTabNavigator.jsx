@@ -3,13 +3,25 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Screens/HomeScreen';
 import WishlistScreen from '../Screens/WishlistScreen';
 import CartScreen from '../Screens/CartScreen';
 import SearchScreen from '../Screens/SearchScreen';
 import SettingsScreen from '../Screens/SettingsScreen';
+import AllProductsScreen from '../Screens/AllProductsScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="AllProducts" component={AllProductsScreen} />
+    </Stack.Navigator>
+  );
+};
 
 // Custom Tab Bar Component
 const CustomTabBar = ({ state, descriptors, navigation }) => {
@@ -22,8 +34,8 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             options.tabBarLabel !== undefined
               ? options.tabBarLabel
               : options.title !== undefined
-              ? options.title
-              : route.name;
+                ? options.title
+                : route.name;
 
           const isFocused = state.index === index;
 
@@ -77,10 +89,10 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                     route.name === 'HomeTab'
                       ? 'home-outline'
                       : route.name === 'Wishlist'
-                      ? 'heart-outline'
-                      : route.name === 'Search'
-                      ? 'search-outline'
-                      : 'settings-outline'
+                        ? 'heart-outline'
+                        : route.name === 'Search'
+                          ? 'search-outline'
+                          : 'settings-outline'
                   }
                   size={24}
                   color={isFocused ? '#F83758' : 'black'}
@@ -114,7 +126,7 @@ export const BottomTabNavigator = () => {
     >
       <Tab.Screen
         name="HomeTab"
-        component={HomeScreen}
+        component={HomeStack}
         options={{
           tabBarLabel: 'Home',
         }}
@@ -155,8 +167,8 @@ const styles = StyleSheet.create({
   tabBarContainer: {
     position: 'absolute',
     backgroundColor: 'white',
-    paddingLeft:10,
-    paddingRight:10,
+    paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: -15,
     bottom: 0,
     left: 0,
