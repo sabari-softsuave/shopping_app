@@ -23,6 +23,15 @@ const HomeStack = () => {
   );
 };
 
+const SearchStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="SearchInitial" component={SearchScreen} />
+      <Stack.Screen name="AllProducts" component={AllProductsScreen} />
+    </Stack.Navigator>
+  );
+};
+
 // Custom Tab Bar Component
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   return (
@@ -147,7 +156,7 @@ export const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Search"
-        component={SearchScreen}
+        component={SearchStack}
         options={{
           tabBarLabel: 'Search',
         }}

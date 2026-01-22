@@ -1,5 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
+import { setUser, logout } from '../redux/slices/authSlice';
 
 import OnboardingScreen from '../Screens/OnboardingScreen';
 import LoginScreen from '../Screens/LoginScreen';
@@ -13,10 +18,35 @@ import ShoppingBagScreen from '../Screens/ShoppingBagScreen';
 import PaymentScreen from '../Screens/PaymentScreen';
 import ProductDetailsScreen from '../Screens/ProductDetailsScreen';
 import SettingsScreen from '../Screens/SettingsScreen';
+import ProfileScreen from '../Screens/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const userData = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          emailVerified: user.emailVerified,
+        };
+        dispatch(setUser(userData));
+      } else {
+        // User is signed out
+        dispatch(logout());
+      }
+    });
+
+    return unsubscribe;
+  }, [dispatch]);
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -37,6 +67,7 @@ const AppNavigator = () => {
         {/* Main App with Bottom Tab Navigation */}
         <Stack.Screen name="MainApp" component={BottomTabNavigator} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

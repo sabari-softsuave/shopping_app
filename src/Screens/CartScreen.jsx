@@ -1,10 +1,12 @@
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import Header from '../Components/Header';
 import CartProductCard from '../Components/CartProductCard';
-import { useCart } from '../context/CartContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteFromCart } from '../redux/slices/cartSlice';
 
 export default function CartScreen({ navigation }) {
-  const { cartItems, deleteFromCart } = useCart();
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   return (
     <View style={styles.container}>
@@ -26,7 +28,7 @@ export default function CartScreen({ navigation }) {
         renderItem={({ item }) => (
           <CartProductCard
             item={item}
-            handleDeleteCart={(i) => deleteFromCart(i.id)}
+            handleDeleteCart={(i) => dispatch(deleteFromCart(i.id))}
             onPress={() => navigation.navigate('ProductDetails', { product: item })}
           />
         )}

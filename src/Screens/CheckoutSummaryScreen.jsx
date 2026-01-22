@@ -1,10 +1,10 @@
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useCart } from '../context/CartContext';
+import { useSelector } from 'react-redux';
 
 export default function CheckoutSummaryScreen({ navigation, route }) {
-  const { cartItems } = useCart();
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const addressData = route.params?.addressData;
 
   return (

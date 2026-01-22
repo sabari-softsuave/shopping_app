@@ -1,13 +1,11 @@
-import { CartProvider } from './src/context/CartContext';
-import { WishlistProvider } from './src/context/WishlistContext';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
 import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
   return (
-    <WishlistProvider>
-      <CartProvider>
-        <AppNavigator />
-      </CartProvider>
-    </WishlistProvider>
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
   );
 }

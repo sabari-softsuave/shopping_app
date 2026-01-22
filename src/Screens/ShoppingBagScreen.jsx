@@ -1,10 +1,12 @@
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useCart } from '../context/CartContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
 
 export default function ShoppingBagScreen({ navigation }) {
-  const { cartItems, addToCart, removeFromCart } = useCart();
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   // Calculate total price
   const calculateTotal = () => {
@@ -47,13 +49,13 @@ export default function ShoppingBagScreen({ navigation }) {
 
                 {/* Quantity Controls */}
                 <View style={styles.quantityContainer}>
-                  <TouchableOpacity onPress={() => removeFromCart(item)} style={styles.qtyButton}>
+                  <TouchableOpacity onPress={() => dispatch(removeFromCart(item))} style={styles.qtyButton}>
                     <Ionicons name="remove" size={18} color="black" />
                   </TouchableOpacity>
 
                   <Text style={styles.qtyText}>{item.quantity}</Text>
 
-                  <TouchableOpacity onPress={() => addToCart(item)} style={styles.qtyButton}>
+                  <TouchableOpacity onPress={() => dispatch(addToCart(item))} style={styles.qtyButton}>
                     <Ionicons name="add" size={18} color="black" />
                   </TouchableOpacity>
                 </View>
