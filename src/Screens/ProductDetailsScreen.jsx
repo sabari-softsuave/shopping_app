@@ -1,6 +1,7 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { addToCart, removeFromCart, deleteFromCart } from '../redux/slices/cartSlice';
+import { addToWishlist, removeFromWishlist } from '../redux/slices/wishlistSlice';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useState, useEffect, useRef } from 'react';
@@ -11,14 +12,16 @@ const { width } = Dimensions.get('window');
 
 export default function ProductDetailsScreen({ route, navigation }) {
   const { product } = route.params;
-  const { addToCart, deleteFromCart, removeFromCart, cartItems } = useCart();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
+
   const [similarProducts, setSimilarProducts] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollRef = useRef(null);
 
-  const isInWishlistState = isInWishlist(product.id);
+  const isInWishlistState = wishlistItems.some((item) => item.id === product.id);
   const isInCart = cartItems.some(item => item.id === product.id);
 
   const handleScroll = (event) => {
@@ -76,18 +79,18 @@ export default function ProductDetailsScreen({ route, navigation }) {
 
   const handleCartAction = () => {
     if (isInCart) {
-      deleteFromCart(product.id);
+      dispatch(deleteFromCart(product.id));
     } else {
-      addToCart(product);
+      dispatch(addToCart(product));
       Alert.alert("Success", "Product added to cart!");
     }
   };
 
   const toggleWishlist = () => {
     if (isInWishlistState) {
-      removeFromWishlist(product.id);
+      dispatch(removeFromWishlist(product.id));
     } else {
-      addToWishlist(product);
+      dispatch(addToWishlist(product));
     }
   };
 
@@ -180,7 +183,7 @@ export default function ProductDetailsScreen({ route, navigation }) {
               height: 50
             }}>
               <TouchableOpacity
-                onPress={() => removeFromCart(product)}
+                onPress={() => dispatch(removeFromCart(product))}
                 style={{ paddingHorizontal: 15 }}
               >
                 <Ionicons name="remove" size={24} color="#ff3b5c" />
@@ -189,7 +192,7 @@ export default function ProductDetailsScreen({ route, navigation }) {
                 {cartItems.find(item => item.id === product.id)?.quantity || 1}
               </Text>
               <TouchableOpacity
-                onPress={() => addToCart(product)}
+                onPress={() => dispatch(addToCart(product))}
                 style={{ paddingHorizontal: 15 }}
               >
                 <Ionicons name="add" size={24} color="#ff3b5c" />
@@ -217,7 +220,7 @@ export default function ProductDetailsScreen({ route, navigation }) {
 
           <TouchableOpacity
             onPress={() => {
-              if (!isInCart) addToCart(product);
+              if (!isInCart) dispatch(addToCart(product));
               navigation.navigate('ShoppingBag');
             }}
             style={{

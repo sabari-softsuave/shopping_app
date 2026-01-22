@@ -2,6 +2,7 @@
   "expo": {
     "name": "Shopping_App",
     "slug": "Shopping_App",
+    "owner": "sabarish-01",
     "scheme": "shoppingapp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -30,6 +31,11 @@
     "plugins": [
       "expo-font",
       "expo-web-browser"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c3572542-c87e-4aab-8816-cce86bd9551b"
+      }
+    }
   }
 }

@@ -1,10 +1,12 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import Header from '../Components/Header';
 import WishlistProductCard from '../Components/WishlistProductCard';
-import { useWishlist } from '../context/WishlistContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFromWishlist } from '../redux/slices/wishlistSlice';
 
 export default function WishlistScreen({ navigation }) {
-  const { wishlistItems, removeFromWishlist } = useWishlist();
+  const dispatch = useDispatch();
+  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
 
   return (
     <View style={styles.container}>
@@ -19,7 +21,7 @@ export default function WishlistScreen({ navigation }) {
         renderItem={({ item }) => (
           <WishlistProductCard
             item={item}
-            handleRemoveWishList={removeFromWishlist}
+            handleRemoveWishList={(id) => dispatch(removeFromWishlist(id))}
             onPress={() => navigation.navigate('ProductDetails', { product: item })}
           />
         )}

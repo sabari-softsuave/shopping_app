@@ -63,7 +63,7 @@ export default function Header() {
         <Text style={styles.title}>Stylish</Text>
       </View>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Checkout')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
         <Image
           source={{ uri: 'https://randomuser.me/api/portraits/men/5.jpg' }}
           style={styles.avatar}
@@ -89,6 +89,8 @@ export default function Header() {
                 <Ionicons name="close" size={24} color="#333" />
               </TouchableOpacity>
             </View>
+
+            <View style={{ height: 1, backgroundColor: '#D3D3D3', marginTop: -15, marginLeft: -20, marginRight: -20, paddingRight: -35, }} />
 
             <TouchableOpacity style={styles.menuItem} onPress={navigateToSettings}>
               <Ionicons name="settings-outline" size={24} color="#333" />
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 30,
-    marginTop: 20,
+    marginTop: 5,
   },
   menuTitle: {
     fontSize: 24,
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#D3D3D3',
   },
   menuItemText: {
     fontSize: 18,

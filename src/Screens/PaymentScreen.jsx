@@ -2,10 +2,10 @@ import { View, Text, TouchableOpacity, StyleSheet, } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import { useCart } from '../context/CartContext';
+import { useSelector } from 'react-redux';
 
 export default function PaymentScreen({ navigation }) {
-  const { cartItems } = useCart();
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const [showSuccess, setShowSuccess] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState('VISA');
 

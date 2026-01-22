@@ -1,10 +1,24 @@
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserProfile } from '../redux/slices/authSlice';
 
 export default function CheckoutScreen({ navigation }) {
+  const user = useSelector((state) => state.auth.user);
   const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      setEmail(user.email || '');
+      setAddress(user.address || '');
+      setCity(user.city || '');
+      setState(user.state || '');
+      setPincode(user.pincode || '');
+      setCountry(user.country || '');
+    }
+  }, [user]);
   const [password, setPassword] = useState('');
   const [pincode, setPincode] = useState('');
   const [address, setAddress] = useState('');
@@ -17,6 +31,8 @@ export default function CheckoutScreen({ navigation }) {
   const [accountHolder, setAccountHolder] = useState('');
   const [ifsc, setIfsc] = useState('');
 
+  const dispatch = useDispatch();
+
   const handleSave = () => {
     const addressData = {
       address,
@@ -26,6 +42,13 @@ export default function CheckoutScreen({ navigation }) {
       country,
       // You can add contact info here if you have a field for it
     };
+
+    // Save to Redux so it persists for next time
+    dispatch(updateUserProfile({
+      email,
+      ...addressData
+    }));
+
     navigation.navigate('CheckoutSummary', { addressData });
   };
 

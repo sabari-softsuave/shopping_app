@@ -1,11 +1,12 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseConfig';
 import { useGoogleAuth } from '../firebase/googleAuth';
-import { useEffect } from 'react';
+
 
 const RegisterScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,10 +17,17 @@ const RegisterScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { promptAsync, signInWithGoogle } = useGoogleAuth();
+  const user = useSelector(state => state.auth.user);
 
   useEffect(() => {
     signInWithGoogle();
   }, [signInWithGoogle]);
+
+  useEffect(() => {
+    if (user) {
+      navigation.replace('GetStarted');
+    }
+  }, [user, navigation]);
 
   const handleRegister = async () => {
     if (!isFormValid) return;
@@ -129,6 +137,7 @@ const RegisterScreen = ({ navigation }) => {
           </Text>
         </Text>
       </View>
+
 
     </View>
   );

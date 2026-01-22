@@ -2,6 +2,7 @@ import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, ActivityIndi
 import { useState, useEffect } from 'react';
 import Header from '../Components/Header';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function AllProductsScreen({ route }) {
     const navigation = useNavigation();
@@ -64,6 +65,15 @@ export default function AllProductsScreen({ route }) {
                 <Text style={styles.productCount}>{products.length} found</Text>
             </View>
 
+            {/* Added Search Shortcut for easy new search */}
+            <TouchableOpacity
+                style={styles.searchShortcut}
+                onPress={() => navigation.navigate('SearchInitial')}
+            >
+                <Ionicons name="search" size={24} color="#666" />
+                <Text style={styles.searchText}>Search Another</Text>
+            </TouchableOpacity>
+
             <FlatList
                 data={products}
                 numColumns={2}
@@ -79,7 +89,7 @@ export default function AllProductsScreen({ route }) {
                             source={item.images && item.images.length > 0 ? item.images[0] : null}
                             style={styles.image}
                         />
-                        <View style={{ height:1, backgroundColor: '#D3D3D3'}}/>
+                        <View style={{ height: 1, backgroundColor: '#D3D3D3' }} />
                         <View style={{ padding: 4 }}>
                             <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
                             <Text style={styles.price}>₹ {item.price}</Text>
@@ -124,7 +134,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 150,
         resizeMode: 'cover',
-        marginBottom: 8,    
+        marginBottom: 8,
     },
     name: {
         fontSize: 14,
@@ -140,5 +150,22 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#666',
         marginTop: 4,
+    },
+    searchShortcut: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        marginBottom: 10,
+        backgroundColor: '#fff',
+        padding: 10,
+        marginHorizontal: 16,
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#eee'
+    },
+    searchText: {
+        marginLeft: 8,
+        color: '#666',
+        fontSize: 14,
     }
 });
